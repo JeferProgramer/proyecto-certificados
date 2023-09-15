@@ -1,0 +1,44 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Subir CSV</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <input type="file" (change)="cargarCSV($event)" accept=".csv">
+    <button mat-raised-button color="accent" (click)="subirArchivo()">Subir CSV</button>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Buscar certificado</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field appearance="fill">
+      <mat-label>Código o persona</mat-label>
+      <input matInput [(ngModel)]="codigo">
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="buscar()">Buscar</button>
+  </mat-card-content>
+</mat-card>
+<br>
+<mat-table [dataSource]="certificados">
+  <ng-container matColumnDef="codigo">
+    <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+    <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="nombre">
+    <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+    <mat-cell *matCellDef="let elemento"> {{elemento.nombre}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha">
+    <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+    <mat-cell *matCellDef="let elemento"> {{elemento.fecha}} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+
+</mat-table>
+
