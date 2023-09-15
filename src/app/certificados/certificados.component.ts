@@ -26,6 +26,7 @@ export class CertificadosComponent {
   ];
   columnsToDisplay = ['codigo', 'nombre', 'fecha'];
   archivoCSV: File | null = null;
+  certificadosFiltrados: Certificado[] = [];
 
   constructor(private http: HttpClient) {}
 
@@ -56,6 +57,16 @@ export class CertificadosComponent {
   }
 
   buscar() {
-    []
+  if (this.codigo.trim() === '') {
+    this.certificadosFiltrados = [...this.certificados];
+  } else {
+    this.certificadosFiltrados = this.certificados.filter(certificado =>
+      certificado.codigo.toLowerCase().includes(this.codigo.trim().toLowerCase())
+    );
   }
+  }
+  
+  ngOnInit() {
+  this.certificadosFiltrados = [...this.certificados];
+}
 }

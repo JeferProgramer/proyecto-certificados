@@ -21,7 +21,7 @@
   </mat-card-content>
 </mat-card>
 <br>
-<mat-table [dataSource]="certificados">
+<mat-table [dataSource]="certificadosFiltrados">
   <ng-container matColumnDef="codigo">
     <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
     <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
