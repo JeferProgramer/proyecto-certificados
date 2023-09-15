@@ -21,24 +21,26 @@
   </mat-card-content>
 </mat-card>
 <br>
-<mat-table [dataSource]="certificadosFiltrados">
-  <ng-container matColumnDef="codigo">
-    <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
-    <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
-  </ng-container>
+<mat-card>
+  <mat-table [dataSource]="certificadosFiltrados">
+    <ng-container matColumnDef="codigo">
+      <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="nombre">
-    <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-    <mat-cell *matCellDef="let elemento"> {{elemento.nombre}} </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="nombre">
+      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.nombre}} </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="fecha">
-    <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-    <mat-cell *matCellDef="let elemento"> {{elemento.fecha}} </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="fecha">
+      <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.fecha}} </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
 
-</mat-table>
+  </mat-table>
+</mat-card>
 
