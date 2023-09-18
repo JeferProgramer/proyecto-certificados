@@ -5,6 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar'; // Importa MatToolbarModule
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -15,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from './enviroment';
 import { MsalModule, MsalInterceptor, MsalGuardConfiguration, MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+import { LayoutComponent } from './layout/layout.component';
 
 const isIE =
   window.navigator.userAgent.indexOf("MSIE ") > -1 ||
@@ -24,7 +27,8 @@ const isIE =
   declarations: [
     AppComponent,
     LoginComponent,
-    CertificadosComponent
+    CertificadosComponent, 
+    LayoutComponent
   ],
   imports: [
     AppRoutingModule,
@@ -36,14 +40,15 @@ const isIE =
     MatButtonModule,
     MatTableModule,
     HttpClientModule,
+    MatToolbarModule,
     BrowserAnimationsModule,
     FormsModule, 
     MsalModule.forRoot(
       new PublicClientApplication({
         auth: {
-          clientId: "39d13414-186d-404f-b1cf-5ac72fba5a61", // Application (client) ID from the app registration
+          clientId: "39d13414-186d-404f-b1cf-5ac72fba5a61",
           authority: "https://login.microsoftonline.com/9f42459d-9806-42d7-957d-fde20fd0f8de",
-           redirectUri: "http://localhost:4200/certificados"
+          redirectUri: "http://localhost:4200/"
         },
         cache: {
           cacheLocation: "localStorage",

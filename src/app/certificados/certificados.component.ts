@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MsalService } from '@azure/msal-angular';
+
 
 
 interface Certificado {
@@ -14,6 +16,8 @@ interface Certificado {
   styleUrls: ['./certificados.component.css']
 })
 export class CertificadosComponent {
+
+  
   codigo = '';
   certificados: Certificado[] = [
     { codigo: '124', nombre: 'María Rodríguez', fecha: '2023-09-13' },
@@ -27,8 +31,16 @@ export class CertificadosComponent {
   columnsToDisplay = ['codigo', 'nombre', 'fecha'];
   archivoCSV: File | null = null;
   certificadosFiltrados: Certificado[] = [];
+  userInfo: any;
+  constructor(private http: HttpClient, private authService: MsalService) {
 
-  constructor(private http: HttpClient) {}
+    this.userInfo = this.authService.instance.getAllAccounts();
+  }
+
+
+  logout() {
+    this.authService.logout();
+  }
 
   subirArchivo(): void{
     if(!this.archivoCSV){

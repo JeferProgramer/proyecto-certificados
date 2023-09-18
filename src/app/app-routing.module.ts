@@ -3,16 +3,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { CertificadosComponent } from './certificados/certificados.component';
 import { MsalGuard } from '@azure/msal-angular';
+import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/certificados', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'certificados', component: CertificadosComponent}
+  { path: 'certificados', component: LayoutComponent, canActivate: [MsalGuard], children: [
+     { path: '', component: CertificadosComponent },
+   ]}
 ];
 
 @NgModule({
+  
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule], 
 })
 export class AppRoutingModule { }
 
