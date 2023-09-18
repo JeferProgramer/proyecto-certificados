@@ -52,7 +52,7 @@ export class CertificadosComponent {
     const formData = new FormData();
     formData.append('csv', this.archivoCSV, this.archivoCSV.name);
 
-    this.http.post('', formData).subscribe(
+    this.http.post('http://127.0.0.1:8000/general_actions/certificados/', formData).subscribe(
       response => {
         console.log("Archivo subido", response);
       },
