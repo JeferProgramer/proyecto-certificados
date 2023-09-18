@@ -6,6 +6,7 @@ interface Certificado {
   codigo: string;
   nombre: string;
   fecha: string;
+  email: string;
 }
 
 @Component({
@@ -16,15 +17,15 @@ interface Certificado {
 export class CertificadosComponent {
   codigo = '';
   certificados: Certificado[] = [
-    { codigo: '124', nombre: 'María Rodríguez', fecha: '2023-09-13' },
-    { codigo: '125', nombre: 'Carlos Soto', fecha: '2023-09-12' },
-    { codigo: '126', nombre: 'Ana Gómez', fecha: '2023-09-11' },
-    { codigo: '127', nombre: 'Pedro Castillo', fecha: '2023-09-10' },
-    { codigo: '128', nombre: 'Luisa Fernández', fecha: '2023-09-09' },
-    { codigo: '129', nombre: 'Diego Morales', fecha: '2023-09-08' },
-    { codigo: '130', nombre: 'Sofía Peña', fecha: '2023-09-07' }
+    { codigo: '124', nombre: 'María Rodríguez', fecha: '2023-09-13', email: 'mariarodriguez@example.com' },
+    { codigo: '125', nombre: 'Carlos Soto', fecha: '2023-09-12', email: 'carlossoto@example.com' },
+    { codigo: '126', nombre: 'Ana Gómez', fecha: '2023-09-11', email: 'anagomez@example.com' },
+    { codigo: '127', nombre: 'Pedro Castillo', fecha: '2023-09-10', email: 'pedrocastillo@example.com' },
+    { codigo: '128', nombre: 'Luisa Fernández', fecha: '2023-09-09', email: 'luisafernandez@example.com' },
+    { codigo: '129', nombre: 'Diego Morales', fecha: '2023-09-08', email: 'diegomorales@example.com' },
+    { codigo: '130', nombre: 'Sofía Peña', fecha: '2023-09-07', email: 'sofiapena@example.com' }
   ];
-  columnsToDisplay = ['codigo', 'nombre', 'fecha'];
+  columnsToDisplay = ['codigo', 'nombre', 'fecha', 'email'];
   archivoCSV: File | null = null;
 
   constructor(private http: HttpClient) {}
@@ -56,6 +57,16 @@ export class CertificadosComponent {
   }
 
   buscar() {
-    []
+    const searchTerm = this.codigo.trim().toLowerCase();
+    console.log("serachTearm", searchTerm);
+
+    if (!searchTerm) {
+      return;
+    }
+
+    this.certificados = this.certificados.filter(certificado =>
+      certificado.codigo.toLowerCase().includes(searchTerm) ||
+      certificado.email.toLowerCase().includes(searchTerm)
+    );
   }
 }
