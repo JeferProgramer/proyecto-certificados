@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ export class LoginComponent {
   usuario = '';
   password = '';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private authService: MsalService) { }
 
   ingresar() {
     if (this.usuario === 'admin' && this.password === '123456') {
@@ -19,4 +20,9 @@ export class LoginComponent {
       alert('Usuario o contraseña incorrectos');
     }
   }
+
+  login() {
+    this.authService.loginRedirect();
+  }
+
 }

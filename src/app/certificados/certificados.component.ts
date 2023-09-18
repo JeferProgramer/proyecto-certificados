@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { MsalService } from '@azure/msal-angular';
+
 
 
 interface Certificado {
@@ -15,6 +17,8 @@ interface Certificado {
   styleUrls: ['./certificados.component.css']
 })
 export class CertificadosComponent {
+
+
   codigo = '';
   certificados: Certificado[] = [
     { codigo: '124', nombre: 'María Rodríguez', fecha: '2023-09-13', email: 'mariarodriguez@example.com' },
@@ -27,11 +31,20 @@ export class CertificadosComponent {
   ];
   columnsToDisplay = ['codigo', 'nombre', 'fecha', 'email'];
   archivoCSV: File | null = null;
+  certificadosFiltrados: Certificado[] = [];
+  userInfo: any;
+  constructor(private http: HttpClient, private authService: MsalService) {
 
-  constructor(private http: HttpClient) {}
+    this.userInfo = this.authService.instance.getAllAccounts();
+  }
 
-  subirArchivo(): void{
-    if(!this.archivoCSV){
+
+  logout() {
+    this.authService.logout();
+  }
+
+  subirArchivo(): void {
+    if (!this.archivoCSV) {
       alert('Por favor, seleccione un archivo primero');
       return;
     }
@@ -49,9 +62,9 @@ export class CertificadosComponent {
     );
   }
 
-  cargarCSV(event: any):void {
+  cargarCSV(event: any): void {
     const fileList: FileList = event.target.files;
-    if(fileList.length > 0){
+    if (fileList.length > 0) {
       this.archivoCSV = fileList[0];
     }
   }
@@ -68,5 +81,9 @@ export class CertificadosComponent {
       certificado.codigo.toLowerCase().includes(searchTerm) ||
       certificado.email.toLowerCase().includes(searchTerm)
     );
+  }
+
+  ngOnInit() {
+    this.certificadosFiltrados = [...this.certificados];
   }
 }
