@@ -10,8 +10,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { CertificadosComponent } from './certificados/certificados.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from './enviroment';
+import { MsalModule, MsalInterceptor, MsalGuardConfiguration, MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
+import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
+
+const isIE =
+  window.navigator.userAgent.indexOf("MSIE ") > -1 ||
+  window.navigator.userAgent.indexOf("Trident/") > -1;
 
 @NgModule({
   declarations: [
@@ -30,9 +37,40 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatTableModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule, 
+    MsalModule.forRoot(
+      new PublicClientApplication({
+        auth: {
+          clientId: "39d13414-186d-404f-b1cf-5ac72fba5a61", // Application (client) ID from the app registration
+          authority: "https://login.microsoftonline.com/9f42459d-9806-42d7-957d-fde20fd0f8de",
+           redirectUri: "http://localhost:4200/certificados"
+        },
+        cache: {
+          cacheLocation: "localStorage",
+          storeAuthStateInCookie: isIE, // Set to true for Internet Explorer 11
+        },
+      }),
+      {
+        interactionType: InteractionType.Redirect,
+        authRequest: {
+          scopes:['user.read']
+        }
+      },
+      {
+        interactionType: InteractionType.Redirect,
+        protectedResourceMap: new Map(
+          [['https://graph.microsoft.com/v1.0/me',['user.Read']]]
+        )
+      }
+    ),
+    
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor
+    }, MsalGuard
+  ],
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }
