@@ -10,7 +10,9 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'certificados', component: LayoutComponent, canActivate: [MsalGuard], children: [
      { path: '', component: CertificadosComponent },
-   ]}
+  ]
+  }, 
+  { path: '**', redirectTo: '/certificados' },
 ];
 
 @NgModule({
