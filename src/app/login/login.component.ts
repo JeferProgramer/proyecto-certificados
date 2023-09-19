@@ -15,7 +15,7 @@ export class LoginComponent {
   constructor(private router: Router, private authService: MsalService) { }
 
   ingresar() {
-    if (this.usuario === 'admin' && this.password === '123456') {
+    if (this.usuario === 'abi@auditbrain.com' && this.password === '123456') {
       this.loginStatus = true;
       localStorage.setItem('loginStatus', 'true');
       this.router.navigate(['/certificados']);
