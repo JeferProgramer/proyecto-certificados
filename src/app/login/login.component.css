@@ -5,9 +5,22 @@
   height: 100vh;
 }
 
+.center-login-button {
+  display: flex !important;
+  justify-content: center !important; 
+    margin: 0px 0px 10px 0px;
+
+}
+
 .form-login {
-  justify-content: center;
-  align-items: center;
-  width: 50vh;
-  height: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  height: auto; 
+}
+
+.logo {
+  max-width: 240px;  
+  margin: 20px 20px 0px 20px;
 }

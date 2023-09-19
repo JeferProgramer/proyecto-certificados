@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 interface Certificado {
@@ -28,7 +29,7 @@ export class CertificadosComponent {
   columnsToDisplay = ['codigo', 'nombre', 'fecha', 'email'];
   archivoCSV: File | null = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   subirArchivo(): void {
     if (!this.archivoCSV) {
@@ -68,5 +69,19 @@ export class CertificadosComponent {
       certificado.codigo.toLowerCase().includes(searchTerm) ||
       certificado.email.toLowerCase().includes(searchTerm)
     );
+  }
+
+  logoutFake() {
+    localStorage.removeItem('loginStatus');
+
+    this.router.navigate(['/login']);
+  }
+
+  ngOnInit(): void {
+    const loginStatus = localStorage.getItem('loginStatus');
+
+    if (!loginStatus || loginStatus !== 'true') {
+      this.router.navigate(['/login']);
+    }
   }
 }
