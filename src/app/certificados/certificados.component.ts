@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+
 
 interface Certificado {
   id: string;
@@ -25,7 +27,7 @@ export class CertificadosComponent implements OnInit {
   columnas: string[] = [];
   dataSource = new MatTableDataSource<Certificado>(this.certificados);
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) {
     this.columnas = ['certificado', 'código', 'fecha', 'horas', 'email'];
   }
 
@@ -64,18 +66,13 @@ export class CertificadosComponent implements OnInit {
 
     if (!isNaN(Number(searchTerm))) {  // Si es un número
       this.getData(`http://127.0.0.1:8000/general_actions/certificados/?certificate_code=${searchTerm}`);
-    } else if (this.isEmail(searchTerm)) {  // Si parece un correo electrónico
+    } else if (searchTerm) {  // Si parece un correo electrónico
       this.getData(`http://127.0.0.1:8000/general_actions/certificados/?certificate_user_email=${searchTerm}`);
     } else {
       this.snackBar.open('No hay datos disponibles', 'Cerrar', {
         duration: 3000
       });
     }
-  }
-
-  isEmail(value: string): boolean {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    return emailRegex.test(value);
   }
 
   getData(url: string): void {
@@ -88,7 +85,7 @@ export class CertificadosComponent implements OnInit {
           this.certificados = data;
           this.dataSource.data = this.certificados;
           this.snackBar.open('No hay datos disponibles', 'Cerrar', {
-            duration: 20000,
+            duration: 3000,
             panelClass: ['custom-snackbar']
           });
         }
@@ -102,7 +99,17 @@ export class CertificadosComponent implements OnInit {
     );
   }
 
+  logoutFake() {
+    localStorage.removeItem('loginStatus');
+
+    this.router.navigate(['/login']);
+  }
   ngOnInit(): void {
+    const loginStatus = localStorage.getItem('loginStatus');
+
+    if (!loginStatus || loginStatus !== 'true') {
+      this.router.navigate(['/login']);
+    }
     // Hacer la petición HTTP al montar el componente
     this.http.get<Certificado[]>('http://127.0.0.1:8000/general_actions/certificados/')
       .subscribe(
