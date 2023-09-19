@@ -88,7 +88,8 @@ export class CertificadosComponent implements OnInit {
           this.certificados = data;
           this.dataSource.data = this.certificados;
           this.snackBar.open('No hay datos disponibles', 'Cerrar', {
-            duration: 3000
+            duration: 20000,
+            panelClass: ['custom-snackbar']
           });
         }
       },

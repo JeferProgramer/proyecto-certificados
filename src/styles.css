@@ -4,4 +4,16 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 :root {
   --mdc-filled-text-field-focus-label-text-color: #0a858d !important;
+  --mdc-snackbar-container-color: #0a858d !important;
 }
+
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #0a858d !important;
+  --mdc-snackbar-supporting-text-color: white !important;
+  --mat-snack-bar-button-color: white !important;
+  /* Cambia el color de texto a blanco */
+}
+.custom-snackbar {
+  background-color: #0a858d;
+}
+
