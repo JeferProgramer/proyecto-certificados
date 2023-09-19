@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-
+import { environment } from '../../environment/environment';
+import { TypeDialogComponent } from '../type-dialog-component/type-dialog-component.component';
+import { MatDialog } from '@angular/material/dialog';
 
 interface Certificado {
   id: string;
@@ -25,13 +27,14 @@ export class CertificadosComponent implements OnInit {
   codigo = '';
   certificados: Certificado[] = [];
   columnas: string[] = [];
+  selectedType: 'certificado' | 'webinar' = 'certificado';
   dataSource = new MatTableDataSource<Certificado>(this.certificados);
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) {
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router, public dialog: MatDialog) {
     this.columnas = ['certificado', 'código', 'fecha', 'horas', 'email'];
   }
 
-  archivoCSV: File | null = null;
+  archivoCSV: any = null;
 
   isLoading = true;
 
@@ -40,11 +43,10 @@ export class CertificadosComponent implements OnInit {
       alert('Por favor, seleccione un archivo primero');
       return;
     }
-
     const formData = new FormData();
-    formData.append('csv', this.archivoCSV, this.archivoCSV.name);
+    formData.append('file', this.archivoCSV!, this.archivoCSV.name!);
 
-    this.http.post('http://127.0.0.1:8000/general_actions/upload_certificado/', formData).subscribe(
+    this.http.post(`${environment.baseUrl}general_actions/upload_certificado/?type=${this.selectedType}`, formData).subscribe(
       response => {
         console.log("Archivo subido", response);
       },
@@ -52,6 +54,7 @@ export class CertificadosComponent implements OnInit {
         console.error("Error", error);
       }
     );
+
   }
 
   cargarCSV(event: any): void {
@@ -64,10 +67,10 @@ export class CertificadosComponent implements OnInit {
   buscar(): void {
     const searchTerm = this.codigo.trim().toLowerCase();
 
-    if (!isNaN(Number(searchTerm))) {  // Si es un número
-      this.getData(`http://127.0.0.1:8000/general_actions/certificados/?certificate_code=${searchTerm}`);
-    } else if (searchTerm) {  // Si parece un correo electrónico
-      this.getData(`http://127.0.0.1:8000/general_actions/certificados/?certificate_user_email=${searchTerm}`);
+    if (!isNaN(Number(searchTerm))) {
+      this.getData(`${environment.baseUrl}general_actions/certificados/?certificate_code=${searchTerm}`);
+    } else if (searchTerm) {
+      this.getData(`${environment.baseUrl}general_actions/certificados/?certificate_user_email=${searchTerm}`);
     } else {
       this.snackBar.open('No hay datos disponibles', 'Cerrar', {
         duration: 3000
@@ -104,23 +107,27 @@ export class CertificadosComponent implements OnInit {
 
     this.router.navigate(['/login']);
   }
+
+  buscarFechaHoy(){
+    this.getData(`${environment.baseUrl}general_actions/certificados/?certificate_today=true`)
+  }
+
   ngOnInit(): void {
     const loginStatus = localStorage.getItem('loginStatus');
 
     if (!loginStatus || loginStatus !== 'true') {
       this.router.navigate(['/login']);
     }
-    // Hacer la petición HTTP al montar el componente
-    this.http.get<Certificado[]>('http://127.0.0.1:8000/general_actions/certificados/')
+    this.http.get<Certificado[]>(`${environment.baseUrl}general_actions/certificados/`)
       .subscribe(
         data => {
-          this.certificados = data;  // Actualizar el array de certificados
-          this.dataSource.data = this.certificados;  // Actualizar la data del MatTableDataSource
-          this.isLoading = false;  // Detener el loading
+          this.certificados = data;
+          this.dataSource.data = this.certificados;
+          this.isLoading = false;
         },
         error => {
           console.error("Error", error);
-          this.isLoading = false;  // Detener el loading
+          this.isLoading = false;
         }
       );
   }

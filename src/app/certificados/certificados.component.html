@@ -1,8 +1,9 @@
 <mat-toolbar color="#ccc">
-<button mat-raised-button class="logout-button" style="background-color: #0a858d; color: white" (click)="logoutFake()">Salir</button>
+  <button mat-raised-button class="logout-button" style="background-color: #0a858d; color: white"
+    (click)="logoutFake()">Salir</button>
 </mat-toolbar>
 <div style="display: flex; justify-content: space-between; align-items: start; padding-top: 2rem">
-  <mat-card style="flex: 1; margin-left: 10px; margin-right: 10px; min-height: 13vw;">
+  <mat-card style="flex: 1; margin-left: 10px; margin-right: 10px; min-height: 13vw; height: 14vw">
     <mat-card-header>
       <mat-card-title>Buscar certificado</mat-card-title>
     </mat-card-header>
@@ -12,24 +13,30 @@
         <input matInput [(ngModel)]="codigo" color="black">
       </mat-form-field>
       <button mat-raised-button style="background-color: #0a858d; color: white" (click)="buscar()">Buscar</button>
+      <br>
+      <a style="cursor:pointer; text-decoration: underline #0a858d;" (click)="buscarFechaHoy()">Certificados cargados hoy</a>
     </mat-card-content>
   </mat-card>
 
-  <mat-card style="flex: 1; margin-right: 10px; min-height: 13vw;">
+  <mat-card style="flex: 1; margin-right: 10px; min-height: 13vw; height: 14vw">
+    <mat-form-field style="width: 100%; margin-bottom: 20px;">
+      <mat-label>Tipo</mat-label>
+      <mat-select [(value)]="selectedType">
+        <mat-option value="certificado">Certificado</mat-option>
+        <mat-option value="webinar">Webinar</mat-option>
+      </mat-select>
+    </mat-form-field>
     <mat-card-header>
       <mat-card-title>Subir Certificado</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <input type="file" (change)="cargarCSV($event)" accept=".csv">
-      <button mat-raised-button style="background-color: #0a858d; color: white" (click)="subirArchivo()">Subir CSV</button>
+      <button mat-raised-button style="background-color: #0a858d; color: white" (click)="subirArchivo()">Subir
+        CSV</button>
     </mat-card-content>
   </mat-card>
 </div>
 <br>
-
-<mat-card *ngIf="!certificados.length">
-  No hay datos disponibles.
-</mat-card>
 
 <mat-card *ngIf="certificados.length">
   <mat-table [dataSource]="dataSource">
@@ -56,7 +63,7 @@
 
     <ng-container matColumnDef="email">
       <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.usuario}} </mat-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.usuario.email}} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
@@ -64,4 +71,3 @@
 
   </mat-table>
 </mat-card>
-

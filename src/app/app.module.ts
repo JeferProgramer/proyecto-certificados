@@ -19,6 +19,11 @@ import { environment } from './enviroment';
 import { MsalModule, MsalInterceptor, MsalGuardConfiguration, MsalGuard, MsalRedirectComponent } from '@azure/msal-angular';
 import { InteractionType, PublicClientApplication } from '@azure/msal-browser';
 import { LayoutComponent } from './layout/layout.component';
+import { TypeDialogComponent } from './type-dialog-component/type-dialog-component.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+
+
 
 const isIE =
   window.navigator.userAgent.indexOf("MSIE ") > -1 ||
@@ -29,14 +34,17 @@ const isIE =
     AppComponent,
     LoginComponent,
     CertificadosComponent,
-    LayoutComponent
+    LayoutComponent,
+    TypeDialogComponent
   ],
   imports: [
     AppRoutingModule,
     BrowserModule,
     AppRoutingModule,
+    MatSelectModule,
     MatCardModule,
     MatFormFieldModule,
+    MatDialogModule,
     MatInputModule,
     MatButtonModule,
     MatTableModule,
