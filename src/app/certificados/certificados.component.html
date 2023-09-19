@@ -1,15 +1,11 @@
-<mat-toolbar color="#ccc">
-
-</mat-toolbar>
 <div style="display: flex; justify-content: space-between; align-items: start; padding-top: 2rem">
-
   <mat-card style="flex: 1; margin-left: 10px; margin-right: 10px; min-height: 13vw;">
     <mat-card-header>
       <mat-card-title>Buscar certificado</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-form-field appearance="fill" color="primary">
-        <mat-label>Código o persona</mat-label>
+        <mat-label>Código o correo</mat-label>
         <input matInput [(ngModel)]="codigo" color="black">
       </mat-form-field>
       <button mat-raised-button style="background-color: #0a858d; color: white" (click)="buscar()">Buscar</button>
@@ -28,29 +24,42 @@
 
 </div>
 <br>
-<mat-card>
-  <mat-table [dataSource]="certificados">
-    <ng-container matColumnDef="codigo">
-      <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.codigo}} </mat-cell>
+
+<mat-card *ngIf="!certificados.length">
+  No hay datos disponibles.
+</mat-card>
+
+<mat-card *ngIf="certificados.length">
+  <mat-table [dataSource]="dataSource">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    <ng-container matColumnDef="certificado">
+      <mat-header-cell *matHeaderCellDef> Certificado </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.certificate_title}} </mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="nombre">
-      <mat-header-cell *matHeaderCellDef> Nombre </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.nombre}} </mat-cell>
+    <ng-container matColumnDef="código">
+      <mat-header-cell *matHeaderCellDef> Código </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.certificate_code}} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="fecha">
       <mat-header-cell *matHeaderCellDef> Fecha </mat-header-cell>
-      <mat-cell *matCellDef="let elemento"> {{elemento.fecha}} </mat-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.certificate_date}} </mat-cell>
     </ng-container>
 
-  <ng-container matColumnDef="email">
-    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
-    <mat-cell *matCellDef="let elemento"> {{elemento.email}} </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="horas">
+      <mat-header-cell *matHeaderCellDef> Cantidad Horaria </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.certificate_hours}} </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: columnsToDisplay;"></mat-row>
+    <ng-container matColumnDef="email">
+      <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let elemento"> {{elemento.usuario}} </mat-cell>
+    </ng-container>
 
-</mat-table>
+    <mat-header-row *matHeaderRowDef="columnas"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: columnas;"></mat-row>
+
+  </mat-table>
+</mat-card>
+
