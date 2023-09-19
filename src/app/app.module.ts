@@ -74,7 +74,8 @@ const isIE =
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor
+      useClass: MsalInterceptor,
+      multi: true
     }, MsalGuard
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
